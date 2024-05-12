@@ -13,5 +13,6 @@ typedef struct scor scor;
 void addAtBeginning(Node **head, char v[]);
 void addAtEnd(Node** head, char v[]);
 void deleteNode(Node **head, char v[]);
+//
 void addAtBeginningScore(scor **head, int value);
-
+void deleteScore(scor **headS, Node **head, int p);

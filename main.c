@@ -19,9 +19,12 @@ int main(int argc, char *argv[]){
     Node* head=NULL;
     if(tasks[0] == 1) head=Task1(d, r);     //task1
     rewind(d);
-    rewind(r);
-    //if(tasks[1] == 1) Task2(d, r, head);   //task2
-
+    
+    if(tasks[1] == 1){      
+        fclose(r);  
+        r = fopen(argv[3], "w");            //task2
+        Task2(d, r, head);
+    }
 
     //de test
     /*

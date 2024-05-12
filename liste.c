@@ -49,3 +49,32 @@ void addAtBeginningScore(scor **head, int value){
 	newNode->next = *head;
 	*head = newNode;
 }
+
+void deleteScore(scor **headS, Node **head, int p){
+	if (*headS==NULL) return;
+	scor *headScopy = *headS;
+	Node *headcopy = *head;
+	if (headScopy->points == p){
+		*headS = (*headS)->next;
+		*head = (*head)->next;
+		free(headScopy);
+		free(headcopy);
+		return;
+	}
+	scor *prevS = *headS;
+	Node *prev = *head;
+	while (headScopy!=NULL){
+		if(headScopy->points != p){
+			prevS = headScopy;
+			prev = headcopy;
+			headScopy = headScopy->next;
+			headcopy = headcopy->next;
+		}else{
+			prevS->next = headScopy->next;
+			prev->next = headcopy->next;
+			free(headScopy);
+			free(headcopy);
+			return;
+		}
+	}
+}
