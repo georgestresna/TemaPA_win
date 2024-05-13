@@ -1,6 +1,13 @@
-typedef struct Player
-{
+struct Player{
     char* firstName;
     char* secondName;
     int points;
-}Player;
+};
+typedef struct Player Player;
+
+typedef struct Team{
+    int nrPlayeri;
+    char numeEchipa[100];
+    float scorEchipa;
+    Player *jucator;
+} Team;

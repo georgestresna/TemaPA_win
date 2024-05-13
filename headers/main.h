@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+//#include "Player.h"
 
 Node* Task1(FILE* fin, FILE* fout);
-void Task2(FILE* fin, FILE* fout, Node* head);
+Node* Task2(FILE* fin, FILE* fout, Node* head);
+void Task3(FILE* fin, FILE* fout);

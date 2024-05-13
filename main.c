@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "./headers/list.h"
 #include "./headers/main.h"
-#include "./headers/Player.h"
+//#include "./headers/Player.h"
 
 
 int main(int argc, char *argv[]){
@@ -23,7 +23,11 @@ int main(int argc, char *argv[]){
     if(tasks[1] == 1){      
         fclose(r);  
         r = fopen(argv[3], "w");            //task2
-        Task2(d, r, head);
+        head = Task2(d, r, head);
+    }
+
+    if(tasks[2] == 1){                      //task3
+            Task3(d, r);
     }
 
     //de test
