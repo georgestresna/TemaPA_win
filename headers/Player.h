@@ -1,6 +1,6 @@
 struct Player{
-    char* firstName;
-    char* secondName;
+    char firstName[100];
+    char secondName[100];
     int points;
 };
 typedef struct Player Player;
@@ -9,5 +9,5 @@ typedef struct Team{
     int nrPlayeri;
     char numeEchipa[100];
     float scorEchipa;
-    Player *jucator;
+    Player jucator[12];
 } Team;

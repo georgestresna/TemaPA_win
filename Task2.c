@@ -1,21 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "./headers/list.h"
+#include <math.h>
 
 void calcScor(Node** head){
     while(*head){
-        (*head)->echipa->scorEchipa=0;
-        for(int i=0; i<(*head)->echipa->nrPlayeri; i++){
-            //punctaj echipa
-            (*head)->echipa->scorEchipa += (*head)->echipa->jucator[i].points;
-        }
+        (*head)->echipa.scorEchipa=0;
+        for(int i=0; i<(*head)->echipa.nrPlayeri; i++) (*head)->echipa.scorEchipa += (*head)->echipa.jucator[i].points;
+        (*head)->echipa.scorEchipa=(*head)->echipa.scorEchipa / (*head)->echipa.nrPlayeri;
         (*head)=(*head)->next;
     }
 }
 
 void writeTask2(FILE* fout, Node* head){
     while(head){
-        fputs(head->echipa->numeEchipa, fout);
+        fputs(head->echipa.numeEchipa, fout);
+        fprintf(fout, "\n");
         head=head->next;
     }
 }
@@ -39,17 +39,15 @@ Node* Task2(FILE* fin, FILE* fout, Node* head){
 
         float scorMinim=9999;
         while(headCopy){
-            if(headCopy->echipa->scorEchipa < scorMinim) scorMinim = headCopy->echipa->scorEchipa;
+            if(headCopy->echipa.scorEchipa < scorMinim) scorMinim = headCopy->echipa.scorEchipa;
             headCopy=headCopy->next;
         }
 
         deleteNode(&head, scorMinim);
         nrEchipe--;
     }
+    
     writeTask2(fout, head);
-    /*while(head){
-        printf("%s", head->echipa->numeEchipa);
-        head=head->next;
-    }*/
+
     return head;
 }

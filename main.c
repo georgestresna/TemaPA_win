@@ -2,8 +2,7 @@
 #include <stdlib.h>
 #include "./headers/list.h"
 #include "./headers/main.h"
-//#include "./headers/Player.h"
-
+//#include "./headers/cozi_stive.h"
 
 int main(int argc, char *argv[]){
 
@@ -19,26 +18,19 @@ int main(int argc, char *argv[]){
     Node* head=NULL;
     if(tasks[0] == 1) head=Task1(d, r);     //task1
     rewind(d);
-    
+
     if(tasks[1] == 1){      
         fclose(r);  
         r = fopen(argv[3], "w");            //task2
         head = Task2(d, r, head);
     }
-
+    //fclose(r);
+    //r=fopen(argv[3], "a");
     if(tasks[2] == 1){                      //task3
-            Task3(d, r);
+            head = Task3(r, head);
     }
+    //while(head){printf("%s ", head->echipa.numeEchipa); head=head->next;}
 
-    //de test
-    /*
-    FILE* fin=fopen("./date/t1/d.in", "r");
-    FILE* fout=fopen("r.out", "w");
-    Task1(fin, fout);
-
-    fclose(fin);
-    fclose(fout);*/
-    fclose(c);
     fclose(d);
     fclose(r);
 

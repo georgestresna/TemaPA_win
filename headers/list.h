@@ -1,10 +1,10 @@
 #include "Player.h"
 
 struct Node{
-    Team *echipa;
+    Team echipa;
     struct Node *next;
 };
 typedef struct Node Node;
 
-void addAtBeginning(Node **head, Team *v);
+void addAtBeginning(Node **head, Team v);
 void deleteNode(Node **head, float scorMinim);
