@@ -26,10 +26,16 @@ int main(int argc, char *argv[]){
     }
     //fclose(r);
     //r=fopen(argv[3], "a");
+    Node*top8=NULL;
     if(tasks[2] == 1){                      //task3
-            head = Task3(r, head);
+            top8 = Task3(r, head);
     }
-    //while(head){printf("%s ", head->echipa.numeEchipa); head=head->next;}
+    Node*aux=NULL; while(head){aux=head; head=head->next; free(aux);} aux=NULL;
+    //int i=1; while(top8){printf("%d. %s %.2f\n", i, top8->echipa.numeEchipa, top8->echipa.scorEchipa); top8=top8->next; i++;}
+
+    /*if(tasks[3] == 1){
+        Task4(top8, r);
+    }*/
 
     fclose(d);
     fclose(r);

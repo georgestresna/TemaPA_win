@@ -3,141 +3,88 @@
 //#include "./headers/list.h"
 #include "./headers/cozi_stive.h"
 #include <string.h>
-/*
-void creareLista(Node**last8, Stiva*winners){
-    //winners e doar o copie
+
+/*void creareLista(Node**last8, Stiva*winners){
+    Team aux;
     while(!isEmptyS(winners)){
-        Team* aux=winners->echipa;
-        winners=winners->next;
+        aux=pop(&winners);
+        printf("adaugare %s %.2f\n", aux.numeEchipa, aux.scorEchipa);
         addAtBeginning(last8, aux);
     }
-}
-*/
+}*/
 
-int prelucrarePodium(Stiva**winners, Stiva**losers, Queue**q, FILE*fout, int nrPlayeriEchipa){
-    
-    //aici am de lucrat, deci imi pune winner si losers bine, dar cand imi umple queue ul inapoi e bucla infinita
-    
-    //eliminare losers
-    Team aux;
-    //while(!isEmptyS(*losers)) aux=pop(losers);
-    deleteStack(losers);
-    //mutare winner in q
-    int counter=0;
-    while(!isEmptyS(*winners)){
-        aux=pop(winners);
-        //printf("%s\n", aux.jucator[0].firstName);
+void printRound(Queue**q, FILE*fout, Stiva**winners, Stiva**losers){
+    Team aux1, aux2;
+    while(!isEmptyQ(*q)){
+        aux1=deQueue(*q);
+        aux2=deQueue(*q);
+        //*counter = *counter - 2;
 
-        //printare castigator si scor
-        fprintf(fout, "%-34s- %.2f\n", aux.numeEchipa, aux.scorEchipa);
-        enQueue(*q, aux);
-        counter++;
+        if(aux1.numeEchipa[strlen(aux1.numeEchipa)-1]==' ') aux1.numeEchipa[strlen(aux1.numeEchipa)-1] = '\0';
+        if(aux2.numeEchipa[strlen(aux2.numeEchipa)-1]==' ') aux2.numeEchipa[strlen(aux2.numeEchipa)-1] = '\0';
+        fprintf(fout, "%-33s-%33s\n", aux1.numeEchipa, aux2.numeEchipa);
+        if(aux1.scorEchipa > aux2.scorEchipa){
+            aux1.scorEchipa++;      //+1pct echipa
+            for(int j=0; j<aux1.nrPlayeri; j++)     //+1pct fiecare jucator
+                aux1.jucator[j].points++;
+            push(winners, aux1);
+            push(losers, aux2);
+        }
+        else{
+            aux2.scorEchipa++;      //+1pct echipa
+            for(int j=0; j<aux2.nrPlayeri; j++)     //+1pct fiecare jucator
+                aux2.jucator[j].points++;
+            push(winners, aux2);
+            push(losers, aux1);
+        }
     }
-    deleteStack(winners);
-    return counter/2;              //noul counter
 }
 
-void prelucrareMeciuri(Queue** q, int counter, FILE* fout, Stiva **winners, Stiva**losers){
-    
-    //pentru fiecare meci
-    for(int i=0; i<counter; i++){
-        //scot meci din queue
-        Team firstTeam, secondTeam;
-
-        firstTeam=deQueue(*q);
-        secondTeam=deQueue(*q);
-        
-        //reglare nume echipa
-        if(firstTeam.numeEchipa[strlen(firstTeam.numeEchipa)-1]==' ') firstTeam.numeEchipa[strlen(firstTeam.numeEchipa)-1] = '\0';
-        if(secondTeam.numeEchipa[strlen(secondTeam.numeEchipa)-1]==' ') secondTeam.numeEchipa[strlen(secondTeam.numeEchipa)-1] = '\0';
-        //scriere tabela de meciuri cu spatii
-        fprintf(fout, "%-33s-%33s\n", firstTeam.numeEchipa, secondTeam.numeEchipa);
-            //declarare castigatori si pierzatori
-            if(firstTeam.scorEchipa > secondTeam.scorEchipa){
-                firstTeam.scorEchipa++;      //+1pct echipa
-                for(int j=0; j<firstTeam.nrPlayeri; j++)     //+1pct fiecare jucator
-                    firstTeam.jucator[j].points++;
-                //Echipa1 in winners Echipa2 in  losers
-                push(winners, firstTeam);
-                //printf("%s\n", meciCurent->Echipa1->numeEchipa);
-                push(losers, secondTeam);
-            }
-            else{
-                secondTeam.scorEchipa++;      //+1pct echipa
-                for(int j=0; j<secondTeam.nrPlayeri; j++)     //+1pct fiecare jucator
-                    secondTeam.jucator[j].points++;
-                //Echipa1 in winners Echipa2 in  losers
-                push(winners, secondTeam);
-                //printf("%s\n", meciCurent->Echipa1->numeEchipa);
-                push(losers, firstTeam);
-            }
-    }
-    deleteQueue(*q);
-}
 
 Node* Task3(FILE* fout, Node* head){
-
-    //creez queue, stive si lista de theLast8
     Queue* q=createQueue();
-    Node* headCopy=head;
-    Node *last8=NULL;
-
-    int counter=0;
-    int round = 1;
-
-    //populare Q din lista, counter = cate meciuri sunt in lista
-    int nrPlayeriEchipa=headCopy->echipa.nrPlayeri;
-    while(headCopy){
-        enQueue(q, headCopy->echipa);
-        headCopy=headCopy->next;
+    int counter=0, round=1;
+    while(head){
+        enQueue(q, head->echipa);
+        head=head->next;
         counter++;
     }
-    counter=counter/2;
+    Team aux1, aux2;
+    Stiva *winners=NULL, *losers=NULL;
+    Node*last8=NULL;
 
-    fprintf(fout, "\n");
+    while(counter != 1){
+        //printf("counter: %d; round: %d\n", counter, round);
+        fprintf(fout, "\n--- ROUND NO:%d\n", round);
+        printRound(&q, fout, &winners, &losers);
+        fprintf(fout,"\nWINNERS OF ROUND NO:%d\n", round);
+        //deleteQueue(q);
+        if(counter/2 == 8){
+            Stiva*winnersA=winners;
+            //creareLista(&last8, winners);
+            while(winnersA){
+                addAtBeginning(&last8, winnersA->echipa); 
+                printf("%s %.2f\n", winnersA->echipa.numeEchipa, winnersA->echipa.scorEchipa); 
+                winnersA=winnersA->next;
+            }
+        }
 
-    //in loop se intra cu q plin si cu winner si loser goale
-
-    //while(counter != 2){
-    //for(int i=0; i<2; i++){
-    //if(1){
-        Stiva* winners=NULL;
-        Stiva* losers=NULL;
-        fprintf(fout, "--- ROUND NO:%d\n", round);
-        prelucrareMeciuri(&q, counter, fout, &winners, &losers);
-        fprintf(fout, "\n"); fprintf(fout,"WINNERS OF ROUND NO:%d\n", round);
+        counter=0;
+        
         deleteStack(&losers);
-        Stiva*winnersAux = winners;
-        while(winnersAux){
-            enQueue(q, winnersAux->echipa);
-            winnersAux=winnersAux->next;
+        while(!isEmptyS(winners)){
+            aux1=pop(&winners);
+            enQueue(q, aux1);
+            fprintf(fout, "%-34s-  %.2f\n", aux1.numeEchipa, aux1.scorEchipa);
+            counter++;
         }
         deleteStack(&winners);
+        round++;
 
-        
-        //este peste tot
-        //if(isEmptyQ(q))printf("empty!!\n");
-        //daca am 8 castigatori in winners
-        //if(counter == 8) creareLista(&last8, winners);
-        //am eliberat stivele, am umplut queue ul
-        /*counter = prelucrarePodium(&winners, &losers, &q, fout, nrPlayeriEchipa); 
-        fprintf(fout, "\n");
-        printf("\n--%d--\n", counter);
-        round++;*/
-
-        //fflush(fout);
-        //winners=NULL;
-        //losers=NULL;
-
-        //queue 
-        while(q->front){printf("%s\n", (q->front)->echipa.numeEchipa); q->front=(q->front)->next;}
-        
-        //printf("winners:\n");
-        //while(winners){printf("%s\n", winners->echipa.numeEchipa); winners=winners->next;}
-        
-        //printf("losers:\n");
-        //while(losers){printf("%s\n", losers->echipa.numeEchipa); losers=losers->next;}
-
-    //}
-    //while(q->front){printf("%s vs %s\n", (q->front)->echipa.numeEchipa, (q->front)->next->echipa.numeEchipa); q->front=(q->front)->next; q->front=(q->front)->next;}
+        fflush(fout);
+    }
+    //while(q->front){printf("%s\n", (q->front)->echipa.numeEchipa); q->front=(q->front)->next;}
+    //while(winners){printf("%s\n", winners->echipa.numeEchipa); winners=winners->next;}
+    //while(losers){printf("%s\n", losers->echipa.numeEchipa); losers=losers->next;}
+    return last8;
 }
