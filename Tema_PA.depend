@@ -1,0 +1,32 @@
+# depslib dependency file v1.0
+1715446581 source:c:\users\george\desktop\tema_pa\task1.c
+	<stdio.h>
+	<stdlib.h>
+	"./headers/list.h"
+
+1715446632 source:c:\users\george\desktop\tema_pa\main.c
+	<stdio.h>
+	<stdlib.h>
+	"./headers/main.h"
+	"./headers/Player.h"
+
+1715439496 c:\users\george\desktop\tema_pa\main.h
+	<stdio.h>
+	<stdlib.h>
+
+1715439512 c:\users\george\desktop\tema_pa\player.h
+
+1715445139 c:\users\george\desktop\tema_pa\list.h
+
+1715446588 source:c:\users\george\desktop\tema_pa\liste.c
+	"./headers/list.h"
+	<string.h>
+
+1715445139 c:\users\george\desktop\tema_pa\headers\list.h
+
+1715439496 c:\users\george\desktop\tema_pa\headers\main.h
+	<stdio.h>
+	<stdlib.h>
+
+1715439512 c:\users\george\desktop\tema_pa\headers\player.h
+
