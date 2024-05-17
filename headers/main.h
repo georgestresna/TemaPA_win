@@ -4,6 +4,6 @@
 
 Node* Task1(FILE* fin, FILE* fout);
 Node* Task2(FILE* fin, FILE* fout, Node* head);
-Node* Task3(FILE* fout, Node* head, Node**last8);
-void Task4(Node*last8, FILE* fout);
-void Task5(FILE* fout);
+void Task3(FILE* fout, Node* head, Node**last8);
+void Task4(Node*last8, FILE* fout, Node**ranked8);
+void Task5(Node* head, FILE* fout);

@@ -31,14 +31,26 @@ int main(int argc, char *argv[]){
             Task3(r, head, &top8);
     }
     Node*aux=NULL; while(head){aux=head; head=head->next; free(aux);} aux=NULL;
-    //int i=1; while(top8){printf("%d. %s %.2f\n", i, top8->echipa.numeEchipa, top8->echipa.scorEchipa); top8=top8->next; i++;}
 
+    Node*ranked8=NULL;
     if(tasks[3] == 1){
-        Task4(top8, r);
+        Task4(top8, r, &ranked8);           //task4
+    }
+    //while(ranked8){printf("%s %.2f\n", ranked8->echipa.numeEchipa, ranked8->echipa.scorEchipa); ranked8=ranked8->next;}
+    while(top8){aux=top8; top8=top8->next; free(aux);} aux=NULL;
+    
+    Node*rankedDesc=NULL;
+    while(ranked8){
+        Node* rankedNode=(Node*)malloc(sizeof(Node));
+        rankedNode->echipa=ranked8->echipa;
+        rankedNode->next=rankedDesc;
+        rankedDesc=rankedNode;
+
+        ranked8=ranked8->next;
     }
 
     if(tasks[4] == 1){
-        Task5(r);
+        Task5(rankedDesc, r);
     }
 
     fclose(d);

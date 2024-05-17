@@ -2,17 +2,23 @@
 #include <stdlib.h>
 #include "./headers/arbori.h"
 
-void printDescending(treeNode* root, FILE* fout) {
+void printDescending(treeNode* root, FILE* fout, Node**ranked8) {
     if (root == NULL) {
         return;
     }
 
-    printDescending(root->right, fout);
+    printDescending(root->right, fout, ranked8);
     fprintf(fout, "%-33s -  %.2f\n", root->echipa.numeEchipa, root->echipa.scorEchipa);
-    printDescending(root->left, fout);
+    
+    Node* treeList=(Node*)malloc(sizeof(Node));
+    treeList->echipa=root->echipa;
+    treeList->next=*ranked8;
+    *ranked8=treeList;
+    
+    printDescending(root->left, fout, ranked8);
 }
 
-void Task4(Node*head, FILE* fout){
+void Task4(Node*head, FILE* fout, Node**ranked8){
 
     fprintf(fout, "\nTOP 8 TEAMS:\n");
     treeNode *root=NULL;
@@ -21,6 +27,7 @@ void Task4(Node*head, FILE* fout){
         root=insert(root, head->echipa);
         head=head->next;
     }
-    printDescending(root, fout);
+
+    printDescending(root, fout, ranked8);
 
 }
